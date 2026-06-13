@@ -8,11 +8,27 @@ const BASE = '/api'
 
 // ── Token helpers ──────────────────────────────────────────────────────────
 export function getToken() {
+  // Try cookie first
+  const nameEQ = "iv_token="
+  const ca = document.cookie.split(';')
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i]
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length)
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
+  }
+  // Fallback to localStorage
   return localStorage.getItem('iv_token')
 }
+
 export function setToken(token) {
-  if (token) localStorage.setItem('iv_token', token)
-  else localStorage.removeItem('iv_token')
+  const sixMonthsInSeconds = 6 * 30 * 24 * 60 * 60
+  if (token) {
+    localStorage.setItem('iv_token', token)
+    document.cookie = `iv_token=${token}; path=/; max-age=${sixMonthsInSeconds}; SameSite=Lax`
+  } else {
+    localStorage.removeItem('iv_token')
+    document.cookie = `iv_token=; path=/; max-age=0; SameSite=Lax`
+  }
 }
 
 // ── Core fetch wrapper ─────────────────────────────────────────────────────

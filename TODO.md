@@ -19,4 +19,4 @@
 # TODO
     [x] fix the icon
     [x] admin web to manage the database
-
+    [ ] cookies, cache

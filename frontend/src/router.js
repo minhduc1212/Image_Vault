@@ -1,3 +1,4 @@
+import { watch } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from './stores'
 
@@ -33,8 +34,25 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
+
+  // Wait for auth store to restore session from cookie/localStorage
+  if (!auth._ready) {
+    await new Promise((resolve) => {
+      const stop = watch(
+        () => auth._ready,
+        (ready) => {
+          if (ready) {
+            stop()
+            resolve()
+          }
+        },
+        { immediate: true }
+      )
+    })
+  }
+
   if (to.meta.requiresAuth && !auth.isLoggedIn) return '/login'
   if (to.meta.guestOnly && auth.isLoggedIn) return '/'
   if (to.meta.requiresAdmin && !auth.currentUser?.is_staff) return '/'
