@@ -35,4 +35,17 @@ urlpatterns = [
     # ------------------------------------------------------------------
     path('photos/<uuid:photo_id>/comments/', views.comment_create, name='comment-create'),
     path('comments/<uuid:comment_id>/',      views.comment_delete, name='comment-delete'),
+
+    # ------------------------------------------------------------------
+    # Admin Panel
+    # ------------------------------------------------------------------
+    path('admin/stats/', views.admin_stats, name='admin-stats'),
+    path('admin/users/', views.admin_users_list, name='admin-users-list'),
+    path('admin/users/<int:user_id>/', views.admin_user_detail, name='admin-user-detail'),
+    path('admin/vaults/', views.admin_vaults_list, name='admin-vaults-list'),
+    path('admin/vaults/<uuid:vault_id>/', views.admin_vault_detail, name='admin-vault-detail'),
+    path('admin/photos/', views.admin_photos_list, name='admin-photos-list'),
+    path('admin/photos/<uuid:photo_id>/', views.admin_photo_detail, name='admin-photo-detail'),
+    path('admin/comments/', views.admin_comments_list, name='admin-comments-list'),
+    path('admin/comments/<uuid:comment_id>/', views.admin_comment_detail, name='admin-comment-detail'),
 ]

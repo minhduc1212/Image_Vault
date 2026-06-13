@@ -17,5 +17,6 @@
     Vue.js
 
 # TODO
-    fix the icon
+    [x] fix the icon
+    [x] admin web to manage the database
 

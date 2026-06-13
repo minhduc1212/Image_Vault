@@ -18,6 +18,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/admin',
+    component: () => import('./views/AdminView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/'
   }
@@ -32,6 +37,7 @@ router.beforeEach((to) => {
   const auth = useAuthStore()
   if (to.meta.requiresAuth && !auth.isLoggedIn) return '/login'
   if (to.meta.guestOnly && auth.isLoggedIn) return '/'
+  if (to.meta.requiresAdmin && !auth.currentUser?.is_staff) return '/'
 })
 
 export default router

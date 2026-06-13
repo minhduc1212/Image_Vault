@@ -57,9 +57,10 @@ function extractError(data) {
   return msgs.join(' | ') || null
 }
 
-const get  = (path, opts)       => request('GET',    path, null, opts)
-const post = (path, body, opts) => request('POST',   path, body, opts)
-const del  = (path, opts)       => request('DELETE', path, null, opts)
+const get   = (path, opts)       => request('GET',    path, null, opts)
+const post  = (path, body, opts) => request('POST',   path, body, opts)
+const patch = (path, body, opts) => request('PATCH',  path, body, opts)
+const del   = (path, opts)       => request('DELETE', path, null, opts)
 
 // ── Auth ───────────────────────────────────────────────────────────────────
 export const authApi = {
@@ -95,4 +96,19 @@ export const photoApi = {
 export const commentApi = {
   add:    (photoId, text) => post(`/photos/${photoId}/comments/`, { text }),
   delete: (id)            => del(`/comments/${id}/`),
+}
+
+// ── Admin ──────────────────────────────────────────────────────────────────
+export const adminApi = {
+  getStats:     ()         => get('/admin/stats/'),
+  listUsers:    ()         => get('/admin/users/'),
+  updateUser:   (id, data) => patch(`/admin/users/${id}/`, data),
+  deleteUser:   (id)       => del(`/admin/users/${id}/`),
+  listVaults:   ()         => get('/admin/vaults/'),
+  updateVault:  (id, data) => patch(`/admin/vaults/${id}/`, data),
+  deleteVault:  (id)       => del(`/admin/vaults/${id}/`),
+  listPhotos:   ()         => get('/admin/photos/'),
+  deletePhoto:  (id)       => del(`/admin/photos/${id}/`),
+  listComments: ()         => get('/admin/comments/'),
+  deleteComment:(id)       => del(`/comments/${id}/`),
 }

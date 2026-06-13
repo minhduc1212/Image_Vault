@@ -37,8 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'initials', 'avatar', 'joined_at']
-        read_only_fields = ['id', 'initials', 'joined_at']
+        fields = ['id', 'name', 'email', 'initials', 'avatar', 'joined_at', 'is_staff', 'is_superuser']
+        read_only_fields = ['id', 'initials', 'joined_at', 'is_staff', 'is_superuser']
 
 
 # ---------------------------------------------------------------------------
@@ -185,3 +185,66 @@ class AddMemberSerializer(serializers.Serializer):
             raise serializers.ValidationError('No user found with this email.')
         self.context['new_member'] = user
         return value.lower()
+
+
+# ---------------------------------------------------------------------------
+# Admin Serializers
+# ---------------------------------------------------------------------------
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    joined_at = serializers.DateTimeField(source='created_at', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'email', 'initials', 'avatar', 'joined_at', 'is_staff', 'is_active', 'is_superuser']
+        read_only_fields = ['id', 'initials', 'joined_at', 'is_superuser']
+
+
+class AdminVaultSerializer(serializers.ModelSerializer):
+    owner = UserMiniSerializer(read_only=True)
+    owner_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='owner', write_only=True, required=False
+    )
+    members = UserMiniSerializer(many=True, read_only=True)
+    photo_count = serializers.SerializerMethodField()
+    member_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vault
+        fields = [
+            'id', 'name', 'description', 'emoji',
+            'owner', 'owner_id', 'members', 'invite_code',
+            'created_at', 'photo_count', 'member_count'
+        ]
+        read_only_fields = ['id', 'invite_code', 'created_at', 'photo_count', 'member_count', 'members']
+
+    def get_photo_count(self, obj):
+        return obj.photos.count()
+
+    def get_member_count(self, obj):
+        return obj.members.count()
+
+
+class AdminPhotoSerializer(serializers.ModelSerializer):
+    uploader = UserMiniSerializer(read_only=True)
+    vault_name = serializers.CharField(source='vault.name', read_only=True)
+    comment_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Photo
+        fields = ['id', 'vault', 'vault_name', 'uploader', 'url', 'caption', 'posted_at', 'comment_count']
+        read_only_fields = ['id', 'vault', 'vault_name', 'uploader', 'posted_at', 'comment_count']
+
+    def get_comment_count(self, obj):
+        return obj.comments.count()
+
+
+class AdminCommentSerializer(serializers.ModelSerializer):
+    author = UserMiniSerializer(read_only=True)
+    vault_name = serializers.CharField(source='photo.vault.name', read_only=True)
+    photo_caption = serializers.CharField(source='photo.caption', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'photo', 'photo_caption', 'vault_name', 'author', 'text', 'posted_at']
+        read_only_fields = ['id', 'photo', 'photo_caption', 'vault_name', 'author', 'posted_at']

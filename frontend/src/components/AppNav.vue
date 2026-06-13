@@ -30,6 +30,10 @@
               <p class="text-muted" style="font-size:0.8rem">{{ auth.currentUser?.email }}</p>
             </div>
             <div class="divider"></div>
+            <router-link v-if="auth.currentUser?.is_staff" to="/admin" class="nav-dropdown-item" @click="showMenu = false">
+              🛡️ Admin Dashboard
+            </router-link>
+            <div v-if="auth.currentUser?.is_staff" class="divider"></div>
             <button class="nav-dropdown-item" @click="handleLogout">
               🚪 Sign Out
             </button>
@@ -187,6 +191,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 
 .nav-dropdown-item {
+  display: block;
   width: 100%;
   text-align: left;
   padding: var(--space-3) var(--space-4);
@@ -194,6 +199,8 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   border: none;
   color: var(--color-text);
   font-size: 0.9rem;
+  text-decoration: none;
+  box-sizing: border-box;
   cursor: pointer;
   transition: var(--transition-fast);
 }
