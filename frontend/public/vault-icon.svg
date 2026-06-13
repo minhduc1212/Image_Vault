@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient (Cozy Sunset/Rose Warmth) -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F97316" />
+      <stop offset="50%" stop-color="#FB7185" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+
+    <!-- Sky Gradient inside Polaroid (Twilight Sunset) -->
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7C2D12" />
+      <stop offset="50%" stop-color="#EA580C" />
+      <stop offset="100%" stop-color="#FFFAF4" />
+    </linearGradient>
+
+    <!-- Sun Gradient -->
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="100%" stop-color="#FBBF24" />
+    </linearGradient>
+
+    <!-- Polished Gold Dial Gradient -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="100%" stop-color="#CA8A04" />
+    </linearGradient>
+
+    <!-- Polaroid Card Shadow -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#7C2D12" flood-opacity="0.3" />
+    </filter>
+
+    <!-- Cutout clip path for landscape -->
+    <clipPath id="cutoutClip">
+      <rect x="136" y="96" width="240" height="240" rx="12" />
+    </clipPath>
+  </defs>
+
+  <!-- Outer Squircle Container -->
+  <rect width="512" height="512" rx="132" fill="url(#bgGradient)" />
+
+  <!-- Inner Soft Border Glow -->
+  <rect x="12" y="12" width="488" height="488" rx="120" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.15" />
+
+  <!-- Polaroid Frame Group (rotated for a warm, organic feel) -->
+  <g transform="rotate(-6 256 256)" filter="url(#dropShadow)">
+    <!-- Polaroid White Frame -->
+    <rect x="116" y="76" width="280" height="360" rx="20" fill="#FFFDF9" />
+    
+    <!-- Photo Cutout Area -->
+    <g clip-path="url(#cutoutClip)">
+      <!-- Sky -->
+      <rect x="136" y="96" width="240" height="240" rx="12" fill="url(#skyGradient)" />
+      
+      <!-- Safe Dial / Sun -->
+      <circle cx="256" cy="175" r="48" fill="url(#sunGradient)" />
+      
+      <!-- Combination Dial Rings and Ticks -->
+      <circle cx="256" cy="175" r="60" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-dasharray="2, 8" />
+      <circle cx="256" cy="175" r="53" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" />
+      
+      <!-- Mountain 1 (Back) -->
+      <path d="M 100,340 L 220,195 L 320,340 Z" fill="#9F1239" opacity="0.8" />
+      
+      <!-- Mountain 2 (Front) -->
+      <path d="M 180,340 L 290,225 L 400,340 Z" fill="#451A03" opacity="0.95" />
+      
+      <!-- Vault Dial Handle (Center of the Sun) -->
+      <g stroke="url(#goldGradient)" stroke-width="5" stroke-linecap="round">
+        <!-- Center hub -->
+        <circle cx="256" cy="175" r="8" fill="url(#goldGradient)" stroke="none" />
+        <!-- Spokes -->
+        <line x1="256" y1="175" x2="256" y2="145" />
+        <line x1="256" y1="175" x2="230" y2="190" />
+        <line x1="256" y1="175" x2="282" y2="190" />
+        <!-- Handle pins -->
+        <circle cx="256" cy="145" r="4" fill="url(#goldGradient)" stroke="none" />
+        <circle cx="230" cy="190" r="4" fill="url(#goldGradient)" stroke="none" />
+        <circle cx="282" cy="190" r="4" fill="url(#goldGradient)" stroke="none" />
+      </g>
+    </g>
+
+    <!-- Polaroid Bottom Margin - Memory Sparkles -->
+    <!-- Large Sparkle -->
+    <path d="M 256,375 Q 256,385 266,385 Q 256,385 256,395 Q 256,385 246,385 Q 256,385 256,375 Z" fill="url(#goldGradient)" />
+    <!-- Small Sparkle -->
+    <path d="M 280,385 Q 280,392 287,392 Q 280,392 280,399 Q 280,392 273,392 Q 280,392 280,385 Z" fill="url(#goldGradient)" opacity="0.8" />
+  </g>
+</svg>
